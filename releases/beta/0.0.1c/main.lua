@@ -12,7 +12,7 @@ end
 local function programmerOpt()
     print("[Programmer Options]:")
     print([[
-Because you are in WINDOWS the program will assume you are programming this code.
+You've enabled Programmer Options.
 Would you like to skip timeouts?
 y/n
     ]])
