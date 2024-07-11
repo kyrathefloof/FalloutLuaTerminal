@@ -5,3 +5,11 @@
 - All of my fallout terminals aim to feel as though these scripts were made by Vault-Tec engineers. Most of the scripts provide hidden modes, secrets and much more. Intended for the overseer, but prone to many vulnerabilities
 - Take a look around, instructions are to come soon. If you'd like to help I'd appreciate it!
 
+This will be in development for a long while, every version will strive to not have any bugs.
+Version System:
+
+#.#.#x
+First Number: Major Update, Major Changes
+Second Number: Minor Update, Quality of Life, etc.
+Third: New systems, new files/utilities, or other changes
+Letter Revision: Small changes, i.e. wording changes or code optimizations that are generally just to indicate small progress
