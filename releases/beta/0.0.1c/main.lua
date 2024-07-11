@@ -1,4 +1,4 @@
-local environmentType = null; -- os.getenv("OS") or "OpenComputers"
+local environmentType = os.getenv("OS") or "OpenComputers"
 local debug = false
 local accessType = "FREE_USE" -- Free_Use, Login_Based, Charge_By_Min
 local mode = "RECREATION" -- Recreation, Overseer, Access_Term must be UPPERCASE
@@ -82,15 +82,9 @@ local function validateEnvType()
 end
 
 -- Colors!!!
-local reset = "\27[0m"      -- Reset to default color
-local red = "\27[31m"       -- Red
-local green = "\27[32m"     -- Green
-local yellow = "\27[33m"    -- Yellow
-local blue = "\27[34m"      -- Blue
-local purple = "\27[35m"   -- Magenta
-local lightblue = "\27[36m"      -- Cyan
-local white = "\27[37m"     -- White
-
+local reset = "\27[0m"        -- Reset to default color
+local yellow = "\27[33m"      -- Yellow
+local blue = "\27[34m"        -- Blue
 
 -- Important Basic Functions
 local function clearTerm()
