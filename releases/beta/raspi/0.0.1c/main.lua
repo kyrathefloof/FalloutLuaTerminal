@@ -1,14 +1,14 @@
-local environmentType = null; -- os.getenv("OS") or "OpenComputers"
+local environmentType = "raspbian"
 local debug = false
 local accessType = "FREE_USE" -- Free_Use, Login_Based, Charge_By_Min
 local mode = "RECREATION" -- Recreation, Overseer, Access_Term must be UPPERCASE
 local skipTimeouts = false
 local programmerAccessCode = 1234
-if environmentType == "OpenComputers" then
-    local component = require("component")
-    local event = require("event")
-    local modem = component.modem
-end
+-- if environmentType == "raspbian" then
+   -- local component = require("component")
+   -- local event = require("event")
+   -- local modem = component.modem
+-- end */
 local function programmerOpt()
     print("[Programmer Options]:")
     print([[
@@ -26,7 +26,7 @@ y/n
         skipTimeouts = false
     end
 end
-if environmentType == "OpenComputers" then
+if environmentType == "raspbian" then
     os.execute("clear")
 else
     os.execute("cls")
@@ -43,13 +43,13 @@ if codeEntered == programmerAccessCode then
     programmerOpt()
 elseif codeEntered == "" then
     print("Terminal is continuing...")
-    if environmentType == "OpenComputers" then
+    if environmentType == "raspbian" then
         os.execute("clear")
     else
         os.execute("cls")
     end
 else
-    if environmentType == "OpenComputers" then
+    if environmentType == "raspbian" then
         os.execute("clear")
     else
         os.execute("cls")
@@ -58,11 +58,11 @@ end
 
 -- Validate Previous Settings
 local function validateEnvType()
-    if environmentType ~= "Windows_NT" and environmentType ~= "OpenComputers" then
+    if environmentType ~= "Windows_NT" and environmentType ~= "raspbian" then
         print([[
             Hold Up! Sorry to interrupt this awesome fallout style terminal, but we need to know what device we're working with.
             Choose one:
-            1. Open Computers
+            1. Raspbian
             2. Windows
         ]])
 
@@ -70,8 +70,8 @@ local function validateEnvType()
         print("Hold on, we're entering your choice " .. choice .. " into the system.")
 
         if choice == "1" or choice == "1." then
-            environmentType = "OpenComputers"
-            print("All set! We've successfully set Open Computers as the environmentType.")
+            environmentType = "raspbian"
+            print("All set! We've successfully set raspbian as the environmentType.")
         elseif choice == "2" or choice == "2." then
             environmentType = "Windows_NT"
             print("All set! We've successfully set Windows as the environmentType.")
@@ -82,21 +82,15 @@ local function validateEnvType()
 end
 
 -- Colors!!!
-local reset = "\27[0m"      -- Reset to default color
-local red = "\27[31m"       -- Red
-local green = "\27[32m"     -- Green
-local yellow = "\27[33m"    -- Yellow
-local blue = "\27[34m"      -- Blue
-local purple = "\27[35m"   -- Magenta
-local lightblue = "\27[36m"      -- Cyan
-local white = "\27[37m"     -- White
-
+local reset = "\27[0m"        -- Reset to default color
+local yellow = "\27[33m"      -- Yellow
+local blue = "\27[34m"        -- Blue
 
 -- Important Basic Functions
 local function clearTerm()
     if environmentType == "Windows_NT" then
         os.execute("cls")
-    elseif environmentType == "OpenComputers" then
+    elseif environmentType == "raspbian" then
         os.execute("clear")
     else
         print("Cannot clear terminal. Unknown environmentType.")
@@ -107,7 +101,7 @@ local function wait(seconds)
     if not skipTimeouts then
         if environmentType == "Windows_NT" then
             os.execute("timeout " .. seconds .. " >nul")
-        elseif environmentType == "OpenComputers" then
+        elseif environmentType == "raspbian" then
             os.execute("sleep " .. seconds)
         else
             print("Wait function not implemented for this environment type.")
@@ -147,16 +141,35 @@ local function getSystemSpecs()
         else
             print("Storage information not found.")
         end
-    elseif environmentType == "OpenComputers" then
-        local computer = require("computer")
-        print("RAM: " .. computer.totalMemory() .. " bytes")
-
-        -- Skip storage retrieval since spaceTotal is not available
-        print("Storage: N/A")
+    elseif environmentType == "raspbian" then
+        -- Retrieve RAM info using 'free -h'
+        local file = io.popen("free -h")
+        local output = file:read("*a")
+        file:close()
+        
+        local ram = output:match("Mem:%s+([%d%.]+[A-Za-z])")
+        if ram then
+            print("RAM: " .. ram)
+        else
+            print("RAM information not found.")
+        end
+        
+        -- Retrieve storage info using 'df -h'
+        file = io.popen("df -h /")
+        output = file:read("*a")
+        file:close()
+        
+        local storage = output:match("/%s+[%d%.]+[A-Za-z]%s+[%d%.]+[A-Za-z]%s+([%d%.]+[A-Za-z])")
+        if storage then
+            print("Storage: " .. storage)
+        else
+            print("Storage information not found.")
+        end
     else
         print("System specs retrieval not implemented for this environment type.")
     end
 end
+
 
 -- System Checkup
 validateEnvType()
@@ -217,6 +230,26 @@ This script makes use of the name "Vault-Tec", which is a registered trademark o
 All rights reserved to respective owners. For removal of Vault-Tec name/branding email support@cloudapi.one
 ]])
 waitThenClear(5)
+print([[
+
+
+
+                   _                          _ 
+   ___ ___ ___ ___| |_ ___ ___ ___ _ _    ___|_|
+  |  _| .'|_ -| . | . | -_|  _|  _| | |  | . | |
+  |_| |__,|___|  _|___|___|_| |_| |_  |  |  _|_|
+              |_|                 |___|  |_|    
+
+
+
+
+
+
+
+This version is made specifically for the Raspberry Pi 5 running raspbian.
+Version 0.0.1c -> rpi
+]])
+waitThenClear(5)
 print(yellow .. [[
 (c) 2002 Fox-Tek Industries
 Terminal Specs:
@@ -253,8 +286,8 @@ Please enter a vaild command:
             recreationMain()
         elseif input == "talk" then
             print("[System]: Checking out your system please wait... ")
-            if environmentType == "WINDOWS_NT" then
-                print("[System]: Sorry, your system is incompatible")
+            if environmentType == "WINDOWS_NT" or environmentType == "raspbian" then
+                print("[System]: Sorry, your system cannot support chatting yet.")
                 waitThenClear(5)
                 recreationMain()
             else
@@ -275,6 +308,8 @@ System Information:
             getSystemSpecs()
             waitThenClear(5)
             recreationMain()
+        elseif input == "logs"
+            dofile("log-viewer.lua")
         else
             print("[System]: Sorry, we're fresh out of options.")
             waitThenClear(5)
