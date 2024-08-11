@@ -261,7 +261,7 @@ Please enter a vaild command:
             clearTerm()
             print([[
 Fox-Tec Terminal
-Version 0.0.1b
+Version 0.0.1c
 Major Changes:
     - Software Lockdown
 System Information:
